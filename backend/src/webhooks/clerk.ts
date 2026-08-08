@@ -43,13 +43,13 @@ export async function clerkWebhookHandler(req: Request, res: Response) {
       await db
         .insert(users)
         .values({
-          clerkUserId: u.id,
+          clerkUser_id: u.id,
           email,
           displayName,
           role,
         })
         .onConflictDoUpdate({
-          target: users.clerkUserId,
+          target: users.clerkUser_id,
           set: { email, displayName, role, updatedAt: new Date() },
         });
     }
@@ -57,7 +57,7 @@ export async function clerkWebhookHandler(req: Request, res: Response) {
     if (evt.type === "user.deleted") {
       const id = evt.data.id;
       if (id) {
-        await db.delete(users).where(eq(users.clerkUserId, id));
+        await db.delete(users).where(eq(users.clerkUser_id, id));
       }
     }
 
