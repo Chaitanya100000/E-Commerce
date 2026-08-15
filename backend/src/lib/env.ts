@@ -24,6 +24,7 @@ const envSchema = z.object({
   IMAGEKIT_PUBLIC_KEY: z.string().min(1),
   IMAGEKIT_PRIVATE_KEY: z.string().min(1),
   IMAGEKIT_URL_ENDPOINT: z.string().url(),
+  
 
   SENTRY_DSN: z.string().url().optional(),
 });
