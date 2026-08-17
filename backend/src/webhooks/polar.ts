@@ -4,7 +4,6 @@ import { checkoutSessions, orderItems, orders } from "../db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "../db/index";
 import { Webhook } from "standardwebhooks";
-import { ok } from "assert";
 
 function headerString(header: Request["headers"], name: string) {
   const value = header[name];
