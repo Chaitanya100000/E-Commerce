@@ -91,6 +91,12 @@ export async function getOrder(
       res.status(401).json({ error: "Unauthorized" });
       return;
     }
+    const localUser = await getLocalUser(userId);
+
+    if (!localUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
     const [order] = await db
       .select()
       .from(orders)
@@ -98,7 +104,7 @@ export async function getOrder(
       .limit(1);
 
     if (!order) {
-      res.status(401).json({ error: "Not fount" });
+      res.status(404).json({ error: "Not fount" });
       return;
     }
 
@@ -197,7 +203,11 @@ export async function createStreamChannel(
   }
 }
 
-export async function createVideoInvite(req: Request, res: Response, next: NextFunction) {
+export async function createVideoInvite(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const { userId, isAuthenticated } = getAuth(req);
     if (!isAuthenticated || !userId) {
@@ -214,7 +224,9 @@ export async function createVideoInvite(req: Request, res: Response, next: NextF
     }
 
     if (!isStaff(localUser.role)) {
-      res.status(403).json({ error: "Only support or admin can send a video invite" });
+      res
+        .status(403)
+        .json({ error: "Only support or admin can send a video invite" });
       return;
     }
 
@@ -229,7 +241,11 @@ export async function createVideoInvite(req: Request, res: Response, next: NextF
       return;
     }
 
-    const [owner] = await db.select().from(users).where(eq(users.id, order.userId)).limit(1);
+    const [owner] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, order.userId))
+      .limit(1);
 
     const customerSid = streamUserId(owner.clerkUserId);
     await server.upsertUser({
@@ -240,7 +256,11 @@ export async function createVideoInvite(req: Request, res: Response, next: NextF
     const staffStreamUserId = streamUserId(userId);
     await server.upsertUser({
       id: staffStreamUserId,
-      name: streamChatDisplayName(localUser.role, localUser.displayName, localUser.email),
+      name: streamChatDisplayName(
+        localUser.role,
+        localUser.displayName,
+        localUser.email,
+      ),
     });
 
     const channelId = `order-${order.id}`;
