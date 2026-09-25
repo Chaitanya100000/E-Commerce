@@ -25,7 +25,6 @@ export async function listProducts(
 
     res.json({ products: rows });
   } catch (err) {
-    console.error("❌ LIST PRODUCTS ERROR:", err);
     next(err);
   }
 }
