@@ -3,9 +3,9 @@ import { getEnv } from "../lib/env";
 import z from "zod";
 import { getAuth } from "@clerk/express";
 import { getLocalUser } from "../lib/users";
+import { db } from "../db";
 import { CheckoutSessionLine, checkoutSessions, products } from "../db/schema";
 import { and, eq, inArray } from "drizzle-orm";
-import { db } from "../db";
 import { polarCreateCheckout } from "../lib/polar";
 
 const env = getEnv();
@@ -27,10 +27,10 @@ export async function createCheckout(
   next: NextFunction,
 ) {
   try {
-    // only singed-in users can start checkout
+    // only signed-in users can start checkout
     const { userId, isAuthenticated } = getAuth(req);
     if (!isAuthenticated || !userId) {
-      res.status(501).json({ error: "Unauthorized" });
+      res.status(401).json({ error: "Unauthorized" });
       return;
     }
 
@@ -50,7 +50,7 @@ export async function createCheckout(
 
     const localUser = await getLocalUser(userId);
     if (!localUser) {
-      res.status(503).json({ error: "Account is not synced yet" });
+      res.status(503).json({ error: "Account not synced yet" });
       return;
     }
 
@@ -126,7 +126,7 @@ export async function createCheckout(
       .where(eq(checkoutSessions.id, session.id));
 
     res.json({ checkoutUrl: checkout.url });
-  } catch (err) {
-    next(err);
+  } catch (e) {
+    next(e);
   }
 }
