@@ -81,14 +81,6 @@ async function fulfillCheckoutSession(
 
 export async function polarWebhookHandler(req: Request, res: Response) {
   const env = getEnv();
-  console.log("POLAR WEBHOOK RECEIVED", {
-    method: req.method,
-    url: req.originalUrl,
-    hasBody: Buffer.isBuffer(req.body),
-    hasWebhookId: Boolean(req.headers["webhook-id"]),
-    hasWebhookTimestamp: Boolean(req.headers["webhook-timestamp"]),
-    hasWebhookSignature: Boolean(req.headers["webhook-signature"]),
-  });
 
   try {
     if (!env.POLAR_WEBHOOK_SECRET) {
@@ -161,7 +153,6 @@ export async function polarWebhookHandler(req: Request, res: Response) {
 
     res.send({ ok: true });
   } catch (err) {
-    console.error("POLAR WEBHOOK ERROR:", err);
     res.status(400).json({ error: "Invalid webhook" });
   }
 }
