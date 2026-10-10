@@ -42,47 +42,53 @@ async function fulfillCheckoutSession(
   polarOrderId: string | undefined,
   checkoutId: string | undefined,
 ) {
-    return await db.transaction(async (tx) => {
-      const [session] = await tx
-        .select()
-        .from(checkoutSessions)
-        .where(eq(checkoutSessions.id, sessionId))
-        .for("update");
+  return await db.transaction(async (tx) => {
+    const [session] = await tx
+      .select()
+      .from(checkoutSessions)
+      .where(eq(checkoutSessions.id, sessionId))
+      .for("update");
 
-      if (!session) return false;
+    if (!session) return false;
 
-      const [order] = await tx
-        .insert(orders)
-        .values({
-          userId: session.userId,
-          status: "paid",
-          totalCents: session.totalCents,
-          polarCheckoutId: checkoutId ?? session.polarCheckoutId ?? null,
-          ...(polarOrderId ? { polarOrderId } : {}),
-        })
-        .returning();
+    const [order] = await tx
+      .insert(orders)
+      .values({
+        userId: session.userId,
+        status: "paid",
+        totalCents: session.totalCents,
+        polarCheckoutId: checkoutId ?? session.polarCheckoutId ?? null,
+        ...(polarOrderId ? { polarOrderId } : {}),
+      })
+      .returning();
 
-      if (session.lines.length) {
-        await tx.insert(orderItems).values(
-          session.lines.map((line) => ({
-            orderId: order.id,
-            productId: line.productId,
-            quantity: line.quantity,
-            unitPriceCents: line.unitPriceCents,
-          })),
-        );
-      }
+    if (session.lines.length) {
+      await tx.insert(orderItems).values(
+        session.lines.map((line) => ({
+          orderId: order.id,
+          productId: line.productId,
+          quantity: line.quantity,
+          unitPriceCents: line.unitPriceCents,
+        })),
+      );
+    }
 
-      await tx
-        .delete(checkoutSessions)
-        .where(eq(checkoutSessions.id, sessionId));
+    await tx.delete(checkoutSessions).where(eq(checkoutSessions.id, sessionId));
 
-      return true;
-    });
-  }
+    return true;
+  });
+}
 
 export async function polarWebhookHandler(req: Request, res: Response) {
   const env = getEnv();
+  console.log("POLAR WEBHOOK RECEIVED", {
+    method: req.method,
+    url: req.originalUrl,
+    hasBody: Buffer.isBuffer(req.body),
+    hasWebhookId: Boolean(req.headers["webhook-id"]),
+    hasWebhookTimestamp: Boolean(req.headers["webhook-timestamp"]),
+    hasWebhookSignature: Boolean(req.headers["webhook-signature"]),
+  });
 
   try {
     if (!env.POLAR_WEBHOOK_SECRET) {
@@ -91,9 +97,10 @@ export async function polarWebhookHandler(req: Request, res: Response) {
     }
     const row =
       req.body instanceof Buffer ? req.body : Buffer.from(String(req.body));
-    const wh = new Webhook(
-      Buffer.from(env.POLAR_WEBHOOK_SECRET, "utf8").toString("base64"),
-    );
+    // const wh = new Webhook(
+    //   Buffer.from(env.POLAR_WEBHOOK_SECRET, "utf8").toString("base64"),
+    // );
+    const wh = new Webhook(env.POLAR_WEBHOOK_SECRET);
 
     const id = headerString(req.headers, "webhook-id");
     const ts = headerString(req.headers, "webhook-timestamp");
@@ -154,7 +161,7 @@ export async function polarWebhookHandler(req: Request, res: Response) {
 
     res.send({ ok: true });
   } catch (err) {
-    console.error("Polar webhook error: ", err);
+    console.error("POLAR WEBHOOK ERROR:", err);
     res.status(400).json({ error: "Invalid webhook" });
   }
 }
