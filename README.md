@@ -1,109 +1,123 @@
-# NovaCart — Full-Stack E-Commerce Platform
+<div align="center">
 
-A full-stack e-commerce application built with React, Node.js, Express, PostgreSQL, Drizzle ORM, Clerk, and Polar. NovaCart demonstrates an end-to-end shopping experience, from browsing products and managing a cart to checkout and order history.
+# 🛍️ NovaCart
 
-<p align="center">
-  <a href="https://e-commerce-4ji0.onrender.com"><strong>Live Demo</strong></a>
-  ·
-  <a href="https://github.com/Chaitanya100000/E-Commerce"><strong>GitHub Repository</strong></a>
-</p>
+### A modern full-stack shopping experience
 
-> **Note:** The live application may require sign-in. Some integrations, such as checkout and order processing, depend on their configured third-party services.
+A full-stack e-commerce application featuring product discovery, a shopping cart, authentication, checkout integration, and order history.
 
-## Screenshots
+<br />
 
-Screenshots are stored in the repository's `screenshots/` directory. Add your actual screenshots using these filenames.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20NovaCart-20C55A?style=for-the-badge&logo=render&logoColor=white)](https://e-commerce-4ji0.onrender.com)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Source%20Code-181717?style=for-the-badge&logo=github)](https://github.com/Chaitanya100000/E-Commerce)
 
-### Homepage
+<br />
+
+**Built with React · Node.js · Express · PostgreSQL · Drizzle ORM · Clerk · Polar**
+
+</div>
+
+---
+
+## ✨ Overview
+
+**NovaCart** is a full-stack e-commerce project built to demonstrate how a modern online shopping application can bring together a responsive frontend, backend services, persistent data, authentication, and payment integration.
+
+The interface uses a dark theme with green accents and includes a product catalog, category filters, cart management, checkout entry point, and order history.
+
+> 🌐 **Try it:** [e-commerce-4ji0.onrender.com](https://e-commerce-4ji0.onrender.com)  
+> Some routes or features may require signing in. Payment and webhook behavior depends on the configured third-party services.
+
+## 🚀 Highlights
+
+| Feature | Description |
+|---|---|
+| 🛍️ **Product catalog** | Browse products with images, descriptions, prices, and category filters. |
+| 🛒 **Cart management** | Review cart items, update quantities, remove products, and view the subtotal. |
+| 🔐 **Authentication** | User authentication integrated with Clerk. |
+| 💳 **Payment workflow** | Polar integration for checkout and payment-related processing. |
+| 📦 **Order history** | View order dates, payment status, item counts, and totals. |
+| 🗄️ **Persistent data** | PostgreSQL database with Drizzle ORM. |
+| 💬 **Order support UI** | The interface advertises order-scoped support chat and optional video for paid orders; verify the flow in the live app. |
+| ☁️ **Deployment** | Hosted demo available online. |
+
+## 🖼️ Screenshots
+
+> Save your real application screenshots in the `screenshots/` directory using the filenames shown below.
+
+### 🏠 Homepage
+
 ![NovaCart homepage](screenshots/homepage.png)
 
-### Product catalog
+### 🧭 Product catalog
+
 ![NovaCart product catalog](screenshots/products.png)
 
-### Shopping cart
+### 🛒 Shopping cart
+
 ![NovaCart shopping cart](screenshots/cart.png)
 
-### Order history
+### 📦 Order history
+
 ![NovaCart order history](screenshots/orders.png)
 
-## Features
+## 🧰 Technology Stack
 
-- **Product catalog:** Browse products with images, descriptions, prices, and category filters.
-- **Shopping cart:** Review selected products, adjust quantities, remove items, and view the subtotal.
-- **Authentication:** User authentication through Clerk.
-- **Checkout and payments:** Polar integration for the payment workflow.
-- **Order history:** View orders, payment status, order dates, item counts, and totals.
-- **Database integration:** PostgreSQL for persistent application data.
-- **Database access and schema management:** Drizzle ORM.
-- **Backend API:** Node.js and Express services for application functionality.
-- **Support experience:** The interface describes order-scoped support chat and optional video for paid orders; verify these flows in the deployed app before relying on them.
+<div align="center">
 
-## Tech Stack
+| Frontend | Backend | Database & integrations |
+|---|---|---|
+| React | Node.js | PostgreSQL |
+| Vite | Express.js | Neon |
+| JavaScript | REST API services | Drizzle ORM |
+|  |  | Clerk Authentication |
+|  |  | Polar Payments |
 
-| Area | Technology |
-|---|---|
-| Frontend | React, Vite, JavaScript |
-| Backend | Node.js, Express.js |
-| Database | PostgreSQL, Neon |
-| ORM | Drizzle ORM |
-| Authentication | Clerk |
-| Payments | Polar |
-| Deployment | Render |
+</div>
 
-## Architecture
+## 🏗️ High-level architecture
 
-NovaCart is organized as a frontend and backend application. The frontend provides the shopping interface and communicates with backend services. The backend handles application logic and database operations, while Clerk and Polar provide authentication and payment-related integrations.
-
-```text
-Customer
-   |
-   v
-React + Vite frontend
-   |
-   v
-Node.js + Express backend
-   |
-   +---- PostgreSQL (Neon)
-   |       via Drizzle ORM
-   |
-   +---- Clerk authentication
-   |
-   +---- Polar payment integration
+```mermaid
+flowchart TD
+    A[Customer] --> B[React + Vite Frontend]
+    B --> C[Node.js + Express Backend]
+    C --> D[(PostgreSQL on Neon)]
+    C --> E[Drizzle ORM]
+    B --> F[Clerk Authentication]
+    C --> G[Polar Payment Integration]
 ```
 
-## Project Structure
+The frontend presents the shopping experience and communicates with backend services. The backend handles application logic and database operations. Clerk and Polar provide authentication and payment-related capabilities.
+
+## 📁 Project structure
 
 ```text
 E-Commerce/
 ├── backend/
 ├── frontend/
-├── Dockerfile
-├── package.json
-├── package-lock.json
 ├── screenshots/
 │   ├── homepage.png
 │   ├── products.png
 │   ├── cart.png
 │   └── orders.png
+├── Dockerfile
+├── package.json
+├── package-lock.json
 └── README.md
 ```
 
-> This is a high-level structure. The exact files and scripts may vary in your repository.
+*This is a high-level overview; the exact files and scripts are defined by the repository.*
 
-## Live Demo
-
-**Website:** https://e-commerce-4ji0.onrender.com
-
-Try browsing the catalog, adding products to the cart, and reviewing the order history after signing in. Use a test payment configuration when testing checkout. Never use real payment details in screenshots or demonstrations.
-
-## Run Locally
+## ⚙️ Run locally
 
 ### Prerequisites
 
-- Git
-- Node.js and npm
-- Access to a PostgreSQL database
-- Clerk credentials for local authentication
+Before starting, install or configure:
+
+- [Node.js](https://nodejs.org/) and npm
+- [Git](https://git-scm.com/)
+- A PostgreSQL database (for example, Neon)
+- Clerk credentials for authentication
 - Polar credentials and webhook configuration if testing payment flows
 
 ### 1. Clone the repository
@@ -115,7 +129,7 @@ cd E-Commerce
 
 ### 2. Install dependencies
 
-Install dependencies in each application directory that contains a `package.json`. For example, if both `frontend/` and `backend/` have their own package files:
+Install dependencies in each app directory that contains a `package.json`. For example, if `frontend/` and `backend/` each have their own package file:
 
 ```bash
 cd frontend
@@ -125,64 +139,79 @@ cd ../backend
 npm install
 ```
 
-If the root `package.json` defines a workspace or additional scripts, follow the instructions in that file as well.
+If the root `package.json` defines workspace commands or additional setup steps, follow those as well.
 
 ### 3. Configure environment variables
 
-Create local `.env` files in the locations expected by the frontend and backend. Check the code and existing environment examples to confirm the exact variable names.
+Create local `.env` files in the locations expected by your frontend and backend. Confirm exact variable names from the code or existing environment examples.
 
-Configure the values required by your setup, such as:
+Your setup may require configuration for:
 
 - PostgreSQL connection string
 - Clerk publishable key and server-side secret key
-- Polar access credentials and webhook secret
-- Frontend/backend URLs and any required CORS origins
+- Polar credentials and webhook secret
+- Frontend and backend URLs
+- CORS origins and any other service-specific settings
 
-Do not copy production secrets into public files. Do not commit `.env` files or credentials to GitHub.
+**Never commit `.env` files, private keys, tokens, or production credentials to GitHub.**
 
 ### 4. Set up the database
 
-Configure your PostgreSQL database and run the migration or schema commands defined in the backend's `package.json` and Drizzle configuration. If the project requires seed data, run the seed script documented by the repository.
+Configure PostgreSQL, then run the migration or schema commands defined by the backend's `package.json` and Drizzle configuration. If the application requires seeded products, run the repository's seed script.
 
-### 5. Start the development servers
+### 5. Start the application
 
-Use the actual scripts defined in each application's `package.json`. Common Vite projects use `npm run dev` for the frontend; the backend command depends on its configured scripts.
+Use the development scripts defined in the relevant `package.json` files. A Vite frontend commonly starts with:
 
-Keep the frontend and backend terminals running while testing locally. Ensure the configured frontend URL, backend URL, authentication settings, and CORS origins match your local environment.
+```bash
+npm run dev
+```
 
-## Environment and Security
+Run that command from the frontend directory if its `package.json` defines it. Start the backend using its configured development script in a separate terminal.
 
-- Keep database URLs, Clerk secret keys, Polar credentials, and webhook secrets private.
-- Use environment variables for secrets and environment-specific configuration.
-- Never commit `.env` files, access tokens, or real customer data.
-- Validate payment webhook signatures on the server before applying payment-related changes.
-- Do not treat a client-side redirect or success page as proof that a payment succeeded.
-- Use test-mode payments and test accounts for development and demonstrations.
+> Script names can vary. Check each `package.json` before running commands.
 
-## What I Learned
+## 🔒 Security practices
 
-Building NovaCart provided hands-on practice with:
+- Store secrets in environment variables, not source code.
+- Keep database credentials and Clerk/Polar secrets private.
+- Verify payment webhook signatures on the server.
+- Never trust a client-side redirect alone as confirmation of a successful payment.
+- Use test accounts and payment test mode during development.
+- Avoid including customer data, order identifiers, or sensitive information in public screenshots.
 
-- Developing a full-stack JavaScript application.
-- Integrating third-party authentication with Clerk.
-- Working with PostgreSQL and Drizzle ORM.
-- Building and connecting frontend and backend services.
-- Integrating payment workflows and webhooks with Polar.
-- Configuring environment variables and deployment settings.
-- Debugging issues across the frontend, backend, database, and third-party services.
+## 🧠 What this project demonstrates
 
-## Future Improvements
+- Full-stack JavaScript application development.
+- Connecting a React frontend to backend services.
+- Authentication integration with Clerk.
+- PostgreSQL data modeling and database operations using Drizzle ORM.
+- Payment workflow integration and webhook handling.
+- Environment configuration and deployment troubleshooting.
+- Building a cohesive shopping UI with product, cart, and order screens.
 
-Potential next steps include automated tests for critical shopping and payment flows, improved error handling and observability, accessibility checks, and performance optimization.
+## 🗺️ Potential next improvements
 
-## Developer
+- Add automated tests for cart, checkout, and order workflows.
+- Improve loading, empty, and error states.
+- Add accessibility and responsive-layout checks.
+- Add monitoring and structured server-side logging.
+- Document exact API routes and environment variables for contributors.
+
+## 👨‍💻 Developer
 
 **Chaitanya Takale**
 
-- GitHub: [Chaitanya100000](https://github.com/Chaitanya100000)
-- Project repository: [E-Commerce / NovaCart](https://github.com/Chaitanya100000/E-Commerce)
+- GitHub: [@Chaitanya100000](https://github.com/Chaitanya100000)
+- Repository: [NovaCart — E-Commerce](https://github.com/Chaitanya100000/E-Commerce)
 - Live demo: [NovaCart](https://e-commerce-4ji0.onrender.com)
 
 ---
 
-If you find a problem or have a suggestion, please open an issue in the GitHub repository.
+<div align="center">
+
+**Thanks for checking out NovaCart!** ⭐
+
+If you have feedback or find a bug, please open an issue in the repository.
+
+</div>
