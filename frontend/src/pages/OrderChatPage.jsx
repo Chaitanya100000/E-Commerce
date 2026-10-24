@@ -1,5 +1,5 @@
 import { HeadphonesIcon, VideoIcon } from "lucide-react";
-import { OrderChatPanelSkeleton } from "../components/LoadingSkeleton";
+import { OrderChatPanelSkeleton } from "../components/LoadingSkeleton.jsx";
 import { PageError } from "../components/PageError.jsx";
 import { useOrderChatPage } from "../hooks/useOrderChatPage.js";
 import {
@@ -11,7 +11,7 @@ import {
   Thread,
   Window,
 } from "stream-chat-react";
-import "stream-chat-react/dist/css/index.css";
+import "stream-chat-react/dist/css/v2/index.css";
 
 function OrderChatPage() {
   const { paid, client, error, channel, canInvite, inviteMutation } = useOrderChatPage();
@@ -78,7 +78,7 @@ function OrderChatPage() {
             <Window>
               <ChannelHeader />
               <MessageList />
-              <MessageInput focus />
+              <MessageInput />
             </Window>
             <Thread />
           </Channel>

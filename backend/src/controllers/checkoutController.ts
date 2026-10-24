@@ -49,6 +49,8 @@ export async function createCheckout(
     }
 
     const localUser = await getLocalUser(userId);
+    console.log("Checkout Clerk user ID:", userId);
+    console.log("Checkout Local user ID:", localUser.id);
     if (!localUser) {
       res.status(503).json({ error: "Account not synced yet" });
       return;

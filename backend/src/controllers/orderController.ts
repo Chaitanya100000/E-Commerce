@@ -104,7 +104,7 @@ export async function getOrder(
       .limit(1);
 
     if (!order) {
-      res.status(404).json({ error: "Not fount" });
+      res.status(404).json({ error: "Not found" });
       return;
     }
 
@@ -157,7 +157,7 @@ export async function createStreamChannel(
       .limit(1);
 
     if (!order) {
-      res.status(401).json({ error: "Not fount" });
+      res.status(404).json({ error: "Order not found" });
       return;
     }
     const isOwner = order.userId === localUser.id;
@@ -185,12 +185,12 @@ export async function createStreamChannel(
     });
 
     const channelId = `order-${order.id}`;
-    const channel = server.channel("Messaging", channelId, {
-      name: `Support . order ${order.id.slice(0, 8)}`,
+    const channel = server.channel("messaging", channelId, {
+      name: `Support · order ${order.id.slice(0, 8)}`,
       created_by_id: streamChatUserId,
     });
-    await channel.create();
 
+    await channel.create();
     await channel.addMembers([streamChatUserId]);
 
     res.json({
@@ -199,6 +199,7 @@ export async function createStreamChannel(
       streamUserId: streamChatUserId,
     });
   } catch (err) {
+    console.error("CREATE STREAM CHANNEL ERROR:", err);
     next(err);
   }
 }
@@ -264,13 +265,16 @@ export async function createVideoInvite(
     });
 
     const channelId = `order-${order.id}`;
-    const channel = server.channel("messaging", channelId, {
-      name: `Support · order ${order.id.slice(0, 8)}`,
-      created_by_id: customerSid,
-    });
+    const channel = server.channel("messaging", channelId);
 
-    await channel.create();
-    await channel.addMembers([customerSid, staffStreamUserId]);
+    // Get the existing support channel.
+    await channel.query();
+
+    // Add only the staff member if they aren't already a member.
+    const members = channel.state.members;
+    if (!members[staffStreamUserId]) {
+      await channel.addMembers([staffStreamUserId]);
+    }
 
     const joinUrl = `${env.FRONTEND_URL.replace(/\/+$/, "")}/orders/${order.id}/call`;
 
@@ -285,6 +289,7 @@ export async function createVideoInvite(
 
     res.json({ ok: true, joinUrl });
   } catch (e) {
+    console.error("CREATE VIDEO INVITE ERROR:", e);
     next(e);
   }
 }

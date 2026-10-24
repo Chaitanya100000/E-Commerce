@@ -1,24 +1,17 @@
 import type { Request, Response, NextFunction } from "express";
 import { getAuth, clerkClient } from "@clerk/express";
 import { getLocalUser } from "../lib/users.js";
-import {
-  getStreamChatServer,
-  streamChatDisplayName,
-  streamUserId,
-} from "../lib/stream.js";
+import { getStreamChatServer, streamChatDisplayName, streamUserId } from "../lib/stream.js";
 import { getEnv } from "../lib/env.js";
 
 const env = getEnv();
 
-export async function createStreamToken(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+export async function createStreamToken(req: Request, res: Response, next: NextFunction) {
   try {
     const { userId, isAuthenticated } = getAuth(req);
     if (!isAuthenticated || !userId) {
-      return res.status(401).json({ error: "Unauthorized" });
+      res.status(401).json({ error: "Unauthorized" });
+      return;
     }
 
     const localUser = await getLocalUser(userId);
@@ -31,9 +24,7 @@ export async function createStreamToken(
 
     const clerkUser = await clerkClient.users.getUser(userId);
 
-    const combined =
-      [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") ||
-      null;
+    const combined = [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") || null;
 
     const name = streamChatDisplayName(
       localUser.role,
@@ -48,8 +39,8 @@ export async function createStreamToken(
 
     const token = server.createToken(sid);
 
-    res.json({ token, apiKey: env.STREAM_API_KEY, userId: sid });
-  } catch (err) {
-    next(err);
+    res.json({ token, apiKey: env.STREAM_API_KEY, userId: sid, name });
+  } catch (e) {
+    next(e);
   }
 }
