@@ -126,7 +126,8 @@ export async function createCheckout(
       .where(eq(checkoutSessions.id, session.id));
 
     res.json({ checkoutUrl: checkout.url });
-  } catch (e) {
+    } catch (e) {
+    console.error("[CREATE CHECKOUT ERROR]", e);
     next(e);
   }
 }
